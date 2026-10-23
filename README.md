@@ -31,3 +31,8 @@ Edit `employees.json` to add, rename, deactivate, or change the role of an emplo
 The user dashboard frontend is in [`CDF/`](CDF/), with Home, Downloads, Settings, Accounts, and Sign Out navigation. After GitHub Pages deployment, the dashboard path will be `https://cgl-create.github.io/CGL-Suite-Accounts/CDF/`.
 
 Private downloads must be stored in Firebase Storage—not committed to this repository. See [CDF setup instructions](CDF/README.md) for assigning files through Firestore and the required security-rule examples. The dashboard is a frontend and does not include an administrator upload screen yet.
+
+
+## Employee-code authentication backend
+
+The Employee Code form is now prepared to call a secure Cloudflare Worker, and CDF recognizes Firebase custom-auth employee claims. Employee sign-in remains **disabled** until the Worker is deployed and the `EMPLOYEE_AUTH_ENDPOINT` constant in the root `index.html` is set to its origin. See [worker setup instructions](worker/README.md). Never put employee codes, code hashes, or Firebase service-account private keys in public repository files.
