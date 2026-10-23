@@ -9,7 +9,7 @@ This Cloudflare Worker is the trusted server-side verifier for the CGL+ Accounts
 - The Worker signs a Firebase custom token using the service account's private key. The browser then exchanges that token through Firebase Authentication.
 - Employee Firebase UIDs are stable and deterministic: `cgl_emp_<username>` (for example, `cgl_emp_nrk`). Do not rename a username after issuing access unless you plan a UID migration.
 - The endpoint only accepts configured website origins. Keep the allow-list narrow.
-- Configure a Cloudflare Rate Limiting binding named `LOGIN_LIMIT` (recommended: 5 requests per 60 seconds per key). Without this binding, the Worker has no built-in distributed rate limiter.
+- Configure a Cloudflare Rate Limiting binding named `LOGIN_LIMIT` (5 requests per 60 seconds per key). The Worker refuses employee sign-in until this binding exists.
 
 ## Required secrets / variables
 
@@ -61,7 +61,7 @@ The helper prompts for a code in your local terminal (the terminal may display w
 1. Create a Cloudflare Worker named, for example, `cgl-accounts-employee-auth`.
 2. Deploy `index.js` as the Worker entry point (Dashboard editor or Wrangler).
 3. Add the secrets and `ALLOWED_ORIGINS` above.
-4. Configure a Rate Limiting binding named `LOGIN_LIMIT` in Worker settings (5 requests / 60 seconds is a starting point).
+4. Configure a Rate Limiting binding named `LOGIN_LIMIT` (5 requests / 60 seconds per key). The Worker intentionally fails closed without it.
 5. Copy the Worker URL. The login endpoint will be `https://YOUR-WORKER.workers.dev/employee-login`.
 6. Keep employee sign-in disabled in the website until the endpoint is deployed and tested.
 
@@ -77,4 +77,4 @@ Before allowing CDF access, update its authentication state logic to accept a va
 
 ## Current status
 
-This folder is source code and setup documentation only. It has not been deployed to Cloudflare and the Employee Code tab has not been connected to it. Do not treat employee login as active until the Worker is deployed, the website integration is committed, and positive/negative login plus CDF authorization tests pass.
+This folder is source code and setup documentation only. It has not been deployed to Cloudflare. The website form is wired to the backend flow, but its `EMPLOYEE_AUTH_ENDPOINT` constant is blank, so employee sign-in remains disabled. Do not treat employee login as active until the Worker is deployed, the endpoint URL is configured, and positive/negative login plus CDF authorization tests pass.
