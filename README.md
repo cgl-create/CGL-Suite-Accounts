@@ -24,3 +24,10 @@ The Firebase web configuration embedded in `index.html` is client-side configura
 Edit `employees.json` to add, rename, deactivate, or change the role of an employee. Keep the fields and JSON syntax valid; use `"active": false` to mark an account inactive.
 
 **Security note:** GitHub Pages serves this file publicly, so it must contain roster details only—not employee codes, passwords, or authentication hashes. The Employee Code tab is still a UI placeholder; it does not authenticate employees yet. Real employee sign-in requires a trusted server-side verifier and must not validate codes in browser JavaScript.
+
+
+## CGL+ CDF dashboard
+
+The user dashboard frontend is in [`CDF/`](CDF/), with Home, Downloads, Settings, Accounts, and Sign Out navigation. After GitHub Pages deployment, the dashboard path will be `https://cgl-create.github.io/CGL-Suite-Accounts/CDF/`.
+
+Private downloads must be stored in Firebase Storage—not committed to this repository. See [CDF setup instructions](CDF/README.md) for assigning files through Firestore and the required security-rule examples. The dashboard is a frontend and does not include an administrator upload screen yet.
