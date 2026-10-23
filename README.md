@@ -17,3 +17,10 @@ The site uses the existing Firebase project `cgl-accounts`; GitHub Pages only ho
 5. Wait for GitHub to provision HTTPS and verify sign-in, account creation, email verification, password reset, Google sign-in, and Firestore profile writes.
 
 The Firebase web configuration embedded in `index.html` is client-side configuration, not a service-account private key. Never commit service-account keys or other server credentials.
+
+
+## Employee roster
+
+Edit `employees.json` to add, rename, deactivate, or change the role of an employee. Keep the fields and JSON syntax valid; use `"active": false` to mark an account inactive.
+
+**Security note:** GitHub Pages serves this file publicly, so it must contain roster details only—not employee codes, passwords, or authentication hashes. The Employee Code tab is still a UI placeholder; it does not authenticate employees yet. Real employee sign-in requires a trusted server-side verifier and must not validate codes in browser JavaScript.
