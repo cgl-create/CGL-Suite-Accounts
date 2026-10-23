@@ -1,17 +1,15 @@
 {
-  "_readme": "Editable CGL+ employee roster. This file is publicly downloadable when deployed on GitHub Pages. Keep passwords, employee codes, hashes used for authentication, and other secrets OUT of this file. Employee-code sign-in remains disabled until a trusted server-side verifier is connected.",
+  "_readme": "Editable CGL+ employee roster. This file is publicly downloadable when deployed on GitHub Pages. Do not put employee login codes, password hashes, or other secrets here. Employee-code sign-in remains disabled until a trusted server-side verifier is connected.",
   "employees": [
     {
       "name": "Nikshith",
       "username": "nrk",
-      "employeeId": "0001",
       "role": "CEO / Founder",
       "active": true
     },
     {
       "name": "Saharsh",
       "username": "sra",
-      "employeeId": "0001",
       "role": "User Employee",
       "active": true
     }
