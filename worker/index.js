@@ -99,8 +99,10 @@ export default {
     if (!origin) return json({ error: "Origin not allowed" }, 403);
     if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, cors);
 
+    if (!env.LOGIN_LIMIT) return json({ error: "Rate limiting is not configured. Contact the administrator." }, 503, cors);
+
     const ip = request.headers.get("CF-Connecting-IP") || "unknown";
-    if (env.LOGIN_LIMIT) {
+    {
       const ipLimit = await env.LOGIN_LIMIT.limit({ key: "ip:" + ip });
       if (!ipLimit.success) return json({ error: "Too many attempts. Wait a minute and try again." }, 429, cors);
     }
