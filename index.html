@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101010">
+<title>CGL+ Accounts</title>
+<style>
+:root{color-scheme:dark;--yellow:#f2c94c;--bg:#101010;--panel:#1a1a1a;--border:#343434;--muted:#aaa}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:#f5f5f5;font:16px/1.5 system-ui,sans-serif;display:flex;flex-direction:column}
+header{padding:20px 6%;border-bottom:1px solid #ffffff15;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:26px;font-weight:900;letter-spacing:-1px}.brand span{color:var(--yellow)}.small{color:var(--muted);font-size:12px}
+main{width:min(460px,calc(100% - 32px));margin:55px auto;flex:1}
+.eyebrow{color:var(--yellow);text-transform:uppercase;letter-spacing:2px;font-size:12px;font-weight:800}
+h1{font-size:38px;line-height:1.15;margin:8px 0;letter-spacing:-1px}.subtitle{color:var(--muted);margin-bottom:25px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:25px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#101010;padding:4px;border-radius:10px;margin-bottom:22px}
+.tab{border:0;border-radius:8px;padding:11px;color:var(--muted);background:transparent;cursor:pointer;font-weight:700}.tab.active{color:white;background:#303030}
+label{display:block;margin:15px 0 6px;font-size:13px;font-weight:700}
+input{width:100%;padding:13px;background:#101010;border:1px solid #414141;border-radius:9px;color:white;font:inherit}
+input:focus{outline:2px solid var(--yellow);outline-offset:1px}button{font:inherit}
+.primary,.secondary{width:100%;border-radius:9px;padding:13px;margin-top:16px;cursor:pointer;font-weight:800}
+.primary{background:var(--yellow);color:#17140a;border:0}.secondary{background:#242424;color:white;border:1px solid #454545}
+button:disabled{opacity:.6;cursor:wait}.links{display:flex;justify-content:space-between;gap:12px;margin-top:17px}
+.link{color:var(--yellow);background:none;border:0;padding:0;cursor:pointer;font-size:13px}
+#message{display:none;padding:12px;margin-bottom:15px;border-radius:8px;overflow-wrap:anywhere;font-size:13px}
+#message.show{display:block}#message.error{background:#351c1c;color:#ffaaaa}#message.success{background:#173021;color:#a5edb9}#message.info{background:#302b1c;color:#f4df9a}
+.hidden{display:none!important}.profile-row{border-bottom:1px solid #ffffff15;padding:13px 0}
+.profile-label{color:var(--muted);font-size:12px}.profile-value{overflow-wrap:anywhere;margin-top:4px}
+.avatar{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;background:#f2c94c20;color:var(--yellow);font-size:24px;font-weight:900;margin-bottom:18px}
+footer{padding:22px;text-align:center;color:#888;font-size:12px;border-top:1px solid #ffffff12}footer strong{color:var(--yellow)}
+@media(max-width:380px){.links{flex-direction:column;align-items:flex-start}h1{font-size:32px}}
+</style>
+</head>
+<body>
+<header><div class="brand">CGL<span>+</span></div><div class="small">ACCOUNT SERVICES</div></header>
+<main>
+<section id="authView">
+<div class="eyebrow">CGL+ Account</div><h1 id="heading">Welcome back.</h1>
+<p class="subtitle" id="subtitle">Sign in to continue to your account.</p>
+<div class="card">
+<div id="message" role="status" aria-live="polite"></div>
+<div class="tabs"><button class="tab active" id="loginTab" type="button">Log in</button><button class="tab" id="signupTab" type="button">Create account</button></div>
+<form id="authForm">
+<div id="nameField" class="hidden"><label for="name">Display name</label><input id="name" maxlength="80" autocomplete="name" placeholder="Your name"></div>
+<label for="email">Email address</label><input id="email" type="email" autocomplete="email" required placeholder="you@example.com">
+<label for="password">Password</label><input id="password" type="password" minlength="6" autocomplete="current-password" required placeholder="At least 6 characters">
+<button class="primary" id="submitButton" type="submit">Log in</button>
+</form>
+<button class="secondary" id="googleButton" type="button">Continue with Google</button>
+<div class="links"><button class="link" id="resetButton" type="button">Forgot password?</button><button class="link" id="verifyButton" type="button">Resend verification</button></div>
+<p class="small">Use your CGL+ account to access supported services.</p>
+</div>
+</section>
+<section id="verificationView" class="hidden">
+<div class="eyebrow">CGL+ Account</div><h1>Verify your email.</h1><p class="subtitle">Verify your email address before completing your account setup.</p>
+<div class="card"><div id="verificationMessage" role="status" aria-live="polite"></div><p>We need you to verify:</p><p><strong id="verificationEmail"></strong></p><p>Open the verification link sent to your inbox. Check your spam folder if it is missing.</p>
+<button class="primary" id="checkVerificationButton" type="button">I've verified my email</button><button class="secondary" id="resendPendingButton" type="button">Resend verification email</button><button class="secondary" id="verificationLogoutButton" type="button">Log out</button></div>
+</section>
+<section id="dashboard" class="hidden">
+<div class="eyebrow">CGL+ Account</div><h1>Your account.</h1><p class="subtitle">Manage your account and sign-in details.</p>
+<div class="card"><div id="dashMessage" role="status" aria-live="polite"></div><div class="avatar" id="avatar">C+</div><h2 id="welcome" style="margin:0">Welcome</h2>
+<div class="profile-row"><div class="profile-label">Display name</div><div class="profile-value" id="profileName"></div></div>
+<div class="profile-row"><div class="profile-label">Email address</div><div class="profile-value" id="profileEmail"></div></div>
+<div class="profile-row"><div class="profile-label">Email verification</div><div class="profile-value" id="profileVerified"></div></div>
+<button class="primary" id="verificationButton" type="button">Send verification email</button><button class="secondary" id="logoutButton" type="button">Log out</button></div>
+</section>
+</main>
+<footer><strong>CGL+</strong> · Account Services</footer>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getAuth,onAuthStateChanged,createUserWithEmailAndPassword,reload,getIdToken,signInWithEmailAndPassword,GoogleAuthProvider,signInWithPopup,sendPasswordResetEmail,sendEmailVerification,updateProfile,signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import { getFirestore,doc,setDoc,serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyBqn92zTvFGLmZ9uxrMugILfMf6sZschsc",authDomain:"cgl-accounts.firebaseapp.com",projectId:"cgl-accounts",storageBucket:"cgl-accounts.firebasestorage.app",messagingSenderId:"42847985624",appId:"1:42847985624:web:186dee16e503801ea35cad"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),googleProvider=new GoogleAuthProvider();
+googleProvider.setCustomParameters({prompt:"select_account"});
+const $=id=>document.getElementById(id);let mode="login",busy=false;
+function message(text,type="info",target="message"){const el=$(target);el.textContent=text;el.className="show "+type}
+function clearMessage(target="message"){$(target).textContent="";$(target).className=""}
+function errorText(error){const errors={"auth/email-already-in-use":"An account already exists with this email. Try logging in.","auth/invalid-email":"Enter a valid email address.","auth/weak-password":"Choose a stronger password.","auth/invalid-credential":"Email or password is incorrect.","auth/user-not-found":"No account was found for that email.","auth/wrong-password":"Email or password is incorrect.","auth/popup-closed-by-user":"Google sign-in was cancelled.","auth/popup-blocked":"Allow pop-ups for this site and try again.","auth/unauthorized-domain":"Add accounts.crazygamelabs.co.uk under Firebase Authentication → Settings → Authorized domains.","permission-denied":"Firestore denied the profile write. Check your Firestore security rules.","auth/too-many-requests":"Too many attempts. Wait before trying again.","auth/network-request-failed":"Network error. Check your connection."};return errors[error.code]||error.message||"Something went wrong. Try again."}
+function setMode(next){mode=next;const signup=mode==="signup";$("loginTab").classList.toggle("active",!signup);$("signupTab").classList.toggle("active",signup);$("nameField").classList.toggle("hidden",!signup);$("heading").textContent=signup?"Create your account.":"Welcome back.";$("subtitle").textContent=signup?"Set up your CGL+ account.":"Sign in to continue to your account.";$("submitButton").textContent=signup?"Create account":"Log in";$("password").autocomplete=signup?"new-password":"current-password";$("verifyButton").style.display=signup?"none":"inline";clearMessage()}
+async function saveProfile(user,isNew=false){const data={uid:user.uid,displayName:user.displayName||"",email:user.email||"",updatedAt:serverTimestamp()};if(isNew)data.createdAt=serverTimestamp();await setDoc(doc(db,"users",user.uid),data,{merge:true})}
+$("loginTab").onclick=()=>setMode("login");$("signupTab").onclick=()=>setMode("signup");
+$("authForm").addEventListener("submit",async event=>{event.preventDefault();if(busy)return;busy=true;const button=$("submitButton");button.disabled=true;clearMessage();try{const email=$("email").value.trim(),password=$("password").value;if(mode==="signup"){const name=$("name").value.trim();if(!name)throw new Error("Enter a display name.");const result=await createUserWithEmailAndPassword(auth,email,password);await updateProfile(result.user,{displayName:name});await sendEmailVerification(result.user);message("Verification email sent. Verify your address before completing account setup.","success","verificationMessage")}else{const result=await signInWithEmailAndPassword(auth,email,password);if(!result.user.emailVerified){await sendEmailVerification(result.user).catch(()=>{});message("Your email is not verified yet. Use the link in your inbox, then check verification here.","info","verificationMessage");return}await saveProfile(result.user)}}catch(error){message(errorText(error),"error",auth.currentUser&&!auth.currentUser.emailVerified?"verificationMessage":"message")}finally{busy=false;button.disabled=false;button.textContent=mode==="signup"?"Create account":"Log in"}});
+$("googleButton").onclick=async()=>{clearMessage();$("googleButton").disabled=true;try{const result=await signInWithPopup(auth,googleProvider);if(!result.user.emailVerified){await sendEmailVerification(result.user).catch(()=>{});message("Verify this email address before completing account setup.","info","verificationMessage");return}await saveProfile(result.user)}catch(error){message(errorText(error),"error")}finally{$("googleButton").disabled=false}};
+$("resetButton").onclick=async()=>{clearMessage();const email=$("email").value.trim();if(!email){message("Enter your email address above first.","info");$("email").focus();return}try{await sendPasswordResetEmail(auth,email);message("If an account exists for this address, a reset email has been sent.","success")}catch(error){message(errorText(error),"error")}};
+async function resendVerification(){try{if(!auth.currentUser)throw new Error("Log in first.");await sendEmailVerification(auth.currentUser);message("Verification email sent. Check your inbox and spam folder.","success","dashMessage")}catch(error){message(errorText(error),"error","dashMessage")}}
+$("verifyButton").onclick=async()=>{clearMessage();if(!auth.currentUser){message("Log in first to resend your verification email.","info");return}try{await sendEmailVerification(auth.currentUser);message("Verification email sent. Check your inbox.","success")}catch(error){message(errorText(error),"error")}};
+$("checkVerificationButton").onclick=async()=>{clearMessage("verificationMessage");const user=auth.currentUser;if(!user){message("Please log in again.","info","verificationMessage");return}const button=$("checkVerificationButton");button.disabled=true;try{await reload(user);if(auth.currentUser&&auth.currentUser.emailVerified){message("Email verified. Loading your account...","success","verificationMessage");window.location.reload()}else{message("Your email is not verified yet. Open the verification link in your inbox, then try again.","info","verificationMessage")}}catch(error){message(errorText(error),"error","verificationMessage")}finally{button.disabled=false}};
+$("resendPendingButton").onclick=async()=>{clearMessage("verificationMessage");const user=auth.currentUser;if(!user){message("Please log in again.","info","verificationMessage");return}const button=$("resendPendingButton");button.disabled=true;try{await sendEmailVerification(user);message("Verification email sent. Check your inbox and spam folder.","success","verificationMessage")}catch(error){message(errorText(error),"error","verificationMessage")}finally{button.disabled=false}};
+$("verificationLogoutButton").onclick=async()=>{try{await signOut(auth)}catch(error){message(errorText(error),"error","verificationMessage")}};
+$("verificationButton").onclick=resendVerification;$("logoutButton").onclick=()=>signOut(auth).catch(error=>message(errorText(error),"error","dashMessage"));
+onAuthStateChanged(auth,async user=>{const verified=!!user&&user.emailVerified;$("authView").classList.toggle("hidden",!!user);$("verificationView").classList.toggle("hidden",!user||verified);$("dashboard").classList.toggle("hidden",!verified);$("verificationButton").classList.toggle("hidden",verified);if(!user)return;if(!verified){$("verificationEmail").textContent=user.email||"your email address";return}const name=user.displayName||user.email?.split("@")[0]||"CGL+ Member";$("welcome").textContent=`Welcome, ${name}.`;$("profileName").textContent=user.displayName||"Not set";$("profileEmail").textContent=user.email||"Not available";$("profileVerified").textContent="Verified";$("avatar").textContent=name.charAt(0).toUpperCase();clearMessage("dashMessage");try{await getIdToken(user,true);await saveProfile(user)}catch(error){message("Signed in, but the profile could not be saved: "+errorText(error),"error","dashMessage")}});
+</script>
+</body>
+</html>
