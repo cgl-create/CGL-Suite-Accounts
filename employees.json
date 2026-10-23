@@ -2,15 +2,21 @@
   "_readme": "Editable CGL+ employee roster. This file is publicly downloadable when deployed on GitHub Pages. Do not put employee login codes, password hashes, or other secrets here. Employee-code sign-in remains disabled until a trusted server-side verifier is connected.",
   "employees": [
     {
-      "name": "Nikshith",
+      "name": "K. Nikshith Reddy",
       "username": "nrk",
       "role": "CEO / Founder",
       "active": true
     },
     {
-      "name": "Saharsh",
+      "name": "A. Saharsh Reddy",
       "username": "sra",
       "role": "User Employee",
+      "active": true
+    },
+    {
+      "name": "V. Reshma Sree",
+      "username": "rsv",
+      "role": "User - Quick Sign In",
       "active": true
     }
   ]
