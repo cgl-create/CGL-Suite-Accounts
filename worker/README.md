@@ -54,7 +54,7 @@ Use Node.js 18 or newer on a trusted computer. Save `hash-code.mjs` from this fo
 node hash-code.mjs
 ```
 
-The helper prompts for a code without echoing it and prints a random salt and PBKDF2 hash. Do not paste the code itself into this repository or into chat. Repeat for each employee, then put the resulting salt/hash in the Cloudflare secret.
+The helper prompts for a code in your local terminal (the terminal may display what you type) and prints a random salt and PBKDF2 hash. Do not paste the code itself into this repository or into chat. Repeat for each employee, then put the resulting salt/hash in the Cloudflare secret.
 
 ## Deploy
 
