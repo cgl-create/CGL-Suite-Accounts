@@ -54,6 +54,7 @@ async function signCustomToken(uid, claims, env) {
   );
   const now = Math.floor(Date.now() / 1000);
   const header = utf8Base64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  // Firebase custom claims must be top-level JWT claims, not nested under a "claims" property.
   const payload = utf8Base64url(JSON.stringify({
     iss: env.FIREBASE_SERVICE_ACCOUNT_EMAIL,
     sub: env.FIREBASE_SERVICE_ACCOUNT_EMAIL,
@@ -61,7 +62,7 @@ async function signCustomToken(uid, claims, env) {
     iat: now,
     exp: now + 3600,
     uid,
-    claims,
+    ...claims,
   }));
   const input = header + "." + payload;
   const signature = await crypto.subtle.sign("RSASSA-PKCS1-v1_5", key, encoder.encode(input));
