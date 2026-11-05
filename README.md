@@ -36,3 +36,8 @@ Private downloads must be stored in Firebase Storage—not committed to this rep
 ## Employee-code authentication backend
 
 The Employee Code form is now prepared to call a secure Cloudflare Worker, and CDF recognizes Firebase custom-auth employee claims. Employee sign-in remains **disabled** until the Worker is deployed and the `EMPLOYEE_AUTH_ENDPOINT` constant in the root `index.html` is set to its origin. See [worker setup instructions](worker/README.md). Never put employee codes, code hashes, or Firebase service-account private keys in public repository files.
+
+
+## AVai Mate OAuth hand-off
+
+The account portal supports the OAuth sign-in hand-off used by the remote CGL+ AVai Mate MCP Worker. When a user opens the portal with an `mcp_oauth_tx` query parameter and signs in with a verified account, the page asks for consent and sends a short-lived Firebase ID token to the Worker for validation. The Firebase password remains handled by Firebase Auth in this existing portal; the Worker does not receive the password.
