@@ -92,6 +92,39 @@ $("resendPendingButton").onclick=async()=>{clearMessage("verificationMessage");c
 $("verificationLogoutButton").onclick=async()=>{try{await signOut(auth)}catch(error){message(errorText(error),"error","verificationMessage")}};
 $("verificationButton").onclick=resendVerification;$("logoutButton").onclick=()=>signOut(auth).catch(error=>message(errorText(error),"error","dashMessage"));
 onAuthStateChanged(auth,async user=>{let tokenResult=null;try{if(user)tokenResult=await getIdTokenResult(user,true)}catch{}const isEmployee=tokenResult?.claims?.employee===true;const verified=!!user&&(user.emailVerified||isEmployee);$("authView").classList.toggle("hidden",!!user);$("verificationView").classList.toggle("hidden",!user||verified);$("dashboard").classList.toggle("hidden",!verified);$("verificationButton").classList.toggle("hidden",verified);if(!user)return;if(!verified){$("verificationEmail").textContent=user.email||"your email address";return}const name=user.displayName||user.email?.split("@")[0]||"CGL+ Member";$("welcome").textContent=`Welcome, ${name}.`;$("profileName").textContent=user.displayName||"Not set";$("profileEmail").textContent=user.email||"Not available";$("profileVerified").textContent="Verified";$("avatar").textContent=name.charAt(0).toUpperCase();clearMessage("dashMessage");try{await getIdToken(user,true);await saveProfile(user,false,isEmployee?{employee:true,employeeId:tokenResult.claims.employeeId,username:tokenResult.claims.username,role:tokenResult.claims.role,authMethod:"employee"}:{})}catch(error){message("Signed in, but the profile could not be saved: "+errorText(error),"error","dashMessage")}});
+
+// AVai Mate / ChatGPT OAuth hand-off. CGL+ Accounts retains control of sign-in;
+// only a short-lived Firebase ID token is sent to the Worker for verification.
+const mcpOAuthTx = new URLSearchParams(window.location.search).get("mcp_oauth_tx");
+let mcpOAuthStarted = false;
+if (mcpOAuthTx) {
+  onAuthStateChanged(auth, async (user) => {
+    if (!user || mcpOAuthStarted) return;
+    if (!user.emailVerified) {
+      message("Verify your CGL+ account email before connecting AVai Mate.", "info", "verificationMessage");
+      return;
+    }
+    mcpOAuthStarted = true;
+    try {
+      const approved = window.confirm("Connect this CGL+ account to ChatGPT for AVai Mate Memory? ChatGPT will be able to read your Memory and, with write permission, save approved changes.");
+      if (!approved) throw new Error("Connection cancelled. You can retry from ChatGPT.");
+      const idToken = await getIdToken(user, true);
+      const response = await fetch("https://cgl-avai-mate-memory-api.nikshith.workers.dev/oauth/firebase/callback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tx: mcpOAuthTx, idToken })
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.redirect_url) throw new Error(result.error_description || result.error || "Could not complete the AVai Mate connection.");
+      window.location.replace(result.redirect_url);
+    } catch (error) {
+      mcpOAuthStarted = false;
+      const target = user.emailVerified ? "dashMessage" : "verificationMessage";
+      message(error.message || "Could not complete the AVai Mate connection.", "error", target);
+    }
+  });
+}
+
 </script>
 </body>
 </html>
