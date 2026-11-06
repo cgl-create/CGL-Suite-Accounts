@@ -106,7 +106,7 @@ if (mcpOAuthTx) {
     }
     mcpOAuthStarted = true;
     try {
-      const approved = window.confirm("Connect this CGL+ account to ChatGPT for AVai Mate Memory? ChatGPT will be able to read your Memory and, with write permission, save approved changes.");
+      const approved = window.confirm("Connect this CGL+ account to ChatGPT for AVai Mate? ChatGPT can read your AVai Mate Memory, save approved changes, and queue short allow-listed movement commands to Raspberry Pi devices you pair. Physical motors remain disabled until you configure and arm them on the Pi dashboard.");
       if (!approved) throw new Error("Connection cancelled. You can retry from ChatGPT.");
       const idToken = await getIdToken(user, true);
       const response = await fetch("https://cgl-avai-mate-memory-api.nikshith.workers.dev/oauth/firebase/callback", {
